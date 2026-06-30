@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact — Villages<sup>&reg;</sup> Community Florida Map</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --teal-dark:    #1A6B6B;
+      --teal-mid:     #2A8A8A;
+      --teal-light:   #E0F4F4;
+      --teal-medium:  #B8E4E4;
+      --gold:         #8B6914;
+      --text-dark:    #1a1a1a;
+      --text-mid:     #333333;
+      --text-muted:   #555555;
+      --white:        #ffffff;
+      --rule:         #CCCCCC;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', Arial, sans-serif;
+      color: var(--text-dark);
+      background: var(--white);
+      line-height: 1.6;
+    }
+
+    sup {
+      font-size: 0.55em;
+      vertical-align: super;
+      line-height: 0;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--teal-dark);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      height: 56px;
+    }
+    .nav-brand {
+      font-family: 'Playfair Display', serif;
+      color: var(--white);
+      font-size: 1rem;
+      letter-spacing: 0.02em;
+      text-decoration: none;
+    }
+    .nav-links {
+      display: flex;
+      gap: 1.75rem;
+      list-style: none;
+    }
+    .nav-links a {
+      color: rgba(255,255,255,0.85);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--white); }
+    .nav-links a.current { color: var(--white); border-bottom: 2px solid var(--white); padding-bottom: 4px; }
+
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+    }
+    .nav-toggle span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--white);
+      border-radius: 2px;
+    }
+
+    .nav-links-mobile {
+      display: none;
+      list-style: none;
+      flex-direction: column;
+      background: var(--teal-dark);
+      position: absolute;
+      top: 56px;
+      left: 0;
+      right: 0;
+      padding: 0.5rem 0;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    .nav-links-mobile.open { display: flex; }
+    .nav-links-mobile a {
+      color: rgba(255,255,255,0.9);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      letter-spacing: 0.03em;
+      padding: 0.85rem 1.5rem;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      display: block;
+    }
+    .nav-links-mobile a:last-child { border-bottom: none; }
+
+    /* ── PAGE HERO ── */
+    .page-hero {
+      background: var(--teal-dark);
+      color: var(--white);
+      padding: 4rem 2rem 3rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .page-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg, transparent, transparent 39px, rgba(255,255,255,0.04) 39px, rgba(255,255,255,0.04) 40px
+      ),
+      repeating-linear-gradient(
+        90deg, transparent, transparent 39px, rgba(255,255,255,0.04) 39px, rgba(255,255,255,0.04) 40px
+      );
+      pointer-events: none;
+    }
+    .page-hero-eyebrow {
+      font-size: 0.8rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 1rem;
+      position: relative;
+    }
+    .page-hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 900;
+      line-height: 1.1;
+      position: relative;
+    }
+
+    /* ── CONTACT SECTION ── */
+    .contact-section {
+      padding: 4rem 2rem 5rem;
+    }
+    .contact-wrap {
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .contact-card {
+      background: var(--teal-light);
+      border: 1px solid var(--teal-medium);
+      border-radius: 8px;
+      padding: 2.5rem;
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+    .contact-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      color: var(--teal-dark);
+      margin-bottom: 0.25rem;
+    }
+    .contact-role {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 1.75rem;
+    }
+
+    .contact-methods {
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+      align-items: center;
+    }
+    .contact-method {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 1.05rem;
+      color: var(--text-dark);
+      text-decoration: none;
+      font-weight: 600;
+      padding: 0.6rem 1.25rem;
+      border-radius: 4px;
+      background: var(--white);
+      border: 1px solid var(--rule);
+      transition: border-color 0.2s, box-shadow 0.2s;
+      min-width: 260px;
+      justify-content: center;
+    }
+    .contact-method:hover {
+      border-color: var(--teal-mid);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .contact-method svg { flex-shrink: 0; color: var(--teal-mid); }
+
+    .contact-intro {
+      font-size: 1.02rem;
+      color: var(--text-mid);
+      line-height: 1.85;
+      margin-bottom: 1.5rem;
+    }
+    .contact-intro strong { color: var(--text-dark); }
+
+    .contact-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      margin-bottom: 0;
+    }
+    .contact-list li {
+      display: flex;
+      gap: 0.75rem;
+      align-items: flex-start;
+      font-size: 0.98rem;
+      color: var(--text-mid);
+      line-height: 1.6;
+    }
+    .contact-list .bullet {
+      color: var(--teal-mid);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-top: 2.5rem;
+      font-size: 0.9rem;
+      color: var(--teal-mid);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .back-link:hover { color: var(--teal-dark); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--text-dark);
+      color: rgba(255,255,255,0.6);
+      padding: 2.5rem 2rem;
+      text-align: center;
+    }
+    footer .footer-name {
+      font-family: 'Playfair Display', serif;
+      color: var(--white);
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+    }
+    footer a { color: rgba(255,255,255,0.7); }
+    footer a:hover { color: var(--white); }
+    .footer-divider {
+      border: none;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      margin: 1.25rem auto;
+      max-width: 300px;
+    }
+    .footer-copy { font-size: 0.8rem; margin-top: 1rem; }
+    .tm-disclaimer {
+      margin-top: 1.25rem;
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.4);
+      line-height: 1.6;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 760px) {
+      .nav-links { display: none; }
+      .nav-toggle { display: flex; }
+      .contact-card { padding: 2rem 1.5rem; }
+      .contact-section { padding: 3rem 1.25rem 3.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-brand" href="index.html">Villages<sup>&reg;</sup> Community Florida Map</a>
+  <ul class="nav-links">
+    <li><a href="index.html#about">About</a></li>
+    <li><a href="index.html#gallery">See the Map</a></li>
+    <li><a href="index.html#advertise">Advertise</a></li>
+    <li><a href="index.html#partner">Partner With Us</a></li>
+    <li><a href="index.html#faq">FAQ</a></li>
+    <li><a href="contact.html" class="current">Contact</a></li>
+  </ul>
+  <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links-mobile" id="navLinksMobile">
+    <li><a href="index.html#about">About</a></li>
+    <li><a href="index.html#gallery">See the Map</a></li>
+    <li><a href="index.html#advertise">Advertise</a></li>
+    <li><a href="index.html#partner">Partner With Us</a></li>
+    <li><a href="index.html#faq">FAQ</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <p class="page-hero-eyebrow">Get In Touch</p>
+  <h1>Let's Talk About the Map</h1>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-section">
+  <div class="contact-wrap">
+
+    <div class="contact-card">
+      <p class="contact-name">Andy DeJaco</p>
+      <p class="contact-role">Villages<sup>&reg;</sup> Community Florida Map Project</p>
+
+      <div class="contact-methods">
+        <a class="contact-method" href="mailto:Maps32162@gmail.com">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="M22 6l-10 7L2 6"/></svg>
+          Maps32162@gmail.com
+        </a>
+        <a class="contact-method" href="sms:6145795121">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          614-579-5121 — please text
+        </a>
+      </div>
+    </div>
+
+    <p class="contact-intro">
+      I live right here in the <strong>Village of Largo</strong>, close to the Bacall Rec Center and the Bogart and Bacall executive golf courses, and would be happy to talk through the project with you — whether you're a non-profit or youth sports organization interested in becoming a partner, or a business interested in advertising or sponsoring the map.
+    </p>
+
+    <ul class="contact-list">
+      <li><span class="bullet">&bull;</span> <span><strong>Interested in becoming a non-profit partner?</strong> I'll walk you through how ad sales, map allocation, and fundraising work for your organization.</span></li>
+      <li><span class="bullet">&bull;</span> <span><strong>Interested in advertising or sponsoring?</strong> I can get you set up directly, or connect you with one of our non-profit sponsors to purchase a spot through them.</span></li>
+    </ul>
+
+    <a href="index.html" class="back-link">&larr; Back to the map project</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p class="footer-name">Villages<sup>&reg;</sup> Community Florida Map</p>
+  <p>The Villages<sup>&reg;</sup>, Florida</p>
+  <hr class="footer-divider">
+  <p>
+    <a href="mailto:Maps32162@gmail.com">Maps32162@gmail.com</a>
+  </p>
+  <p class="footer-copy">© 2026-2027 Villages<sup>&reg;</sup> Community Florida Map Project. All rights reserved.</p>
+  <p class="tm-disclaimer">THE VILLAGES<sup>&reg;</sup> is a registered trademark of Holding Company of The Villages, Inc. Maps32162 is not affiliated with, or sponsored by, Holding Company of The Villages, Inc. or its affiliated entities.</p>
+</footer>
+
+<script>
+  const navToggle = document.getElementById('navToggle');
+  const navLinksMobile = document.getElementById('navLinksMobile');
+  navToggle.addEventListener('click', () => {
+    const isOpen = navLinksMobile.classList.toggle('open');
+    navToggle.setAttribute('aria-expanded', isOpen);
+  });
+</script>
+
+</body>
+</html>

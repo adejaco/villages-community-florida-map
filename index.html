@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Villages<sup>®</sup> Community Florida Map</title>
+  <title>Villages<sup>&reg;</sup> Community Florida Map</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
@@ -29,6 +29,12 @@
       color: var(--text-dark);
       background: var(--white);
       line-height: 1.6;
+    }
+
+    sup {
+      font-size: 0.55em;
+      vertical-align: super;
+      line-height: 0;
     }
 
     /* ── NAV ── */
@@ -65,6 +71,48 @@
       transition: color 0.2s;
     }
     .nav-links a:hover { color: var(--white); }
+
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+    }
+    .nav-toggle span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--white);
+      border-radius: 2px;
+    }
+
+    .nav-links-mobile {
+      display: none;
+      list-style: none;
+      flex-direction: column;
+      background: var(--teal-dark);
+      position: absolute;
+      top: 56px;
+      left: 0;
+      right: 0;
+      padding: 0.5rem 0;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    .nav-links-mobile.open { display: flex; }
+    .nav-links-mobile a {
+      color: rgba(255,255,255,0.9);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      letter-spacing: 0.03em;
+      padding: 0.85rem 1.5rem;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .nav-links-mobile a:last-child { border-bottom: none; }
 
     /* ── HERO ── */
     .hero {
@@ -259,8 +307,9 @@
 
     .gallery-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
       gap: 1rem;
+      align-items: start;
     }
     .gallery-item {
       background: var(--white);
@@ -270,21 +319,39 @@
     }
     .gallery-item img {
       width: 100%;
-      aspect-ratio: 4/3;
+      height: 100%;
       object-fit: cover;
       display: block;
     }
+    /* Portrait: front/back covers, zoom-ins — standard upright frame */
+    .gallery-item.portrait .gallery-placeholder,
+    .gallery-item.portrait img { aspect-ratio: 2/3; }
+
+    /* Front unfolded: 31" tall x 19" wide -> tall portrait */
+    .gallery-item.front-unfolded .gallery-placeholder,
+    .gallery-item.front-unfolded img { aspect-ratio: 19/31; }
+
+    /* Back unfolded: 19" tall x 31" wide -> wide landscape, spans 2 columns */
+    .gallery-item.back-unfolded { grid-column: span 2; }
+    .gallery-item.back-unfolded .gallery-placeholder,
+    .gallery-item.back-unfolded img { aspect-ratio: 31/19; }
+
+    @media (max-width: 640px) {
+      .gallery-item.back-unfolded { grid-column: span 1; }
+    }
+
     .gallery-placeholder {
       width: 100%;
-      aspect-ratio: 4/3;
-      background: #e8f0e8;
+      background: #e8f0f0;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       color: var(--teal-mid);
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       gap: 0.5rem;
+      text-align: center;
+      padding: 0.5rem;
     }
     .gallery-placeholder svg { opacity: 0.4; }
     .gallery-item-caption {
@@ -399,7 +466,7 @@
     }
     .step-text { font-size: 0.95rem; color: var(--text-mid); }
 
-    .cta-green {
+    .cta-teal {
       display: inline-block;
       background: var(--teal-dark);
       color: var(--white);
@@ -409,8 +476,10 @@
       font-size: 1rem;
       text-decoration: none;
       transition: background 0.2s;
+      border: none;
+      cursor: pointer;
     }
-    .cta-green:hover { background: var(--teal-mid); }
+    .cta-teal:hover { background: var(--teal-mid); }
 
     /* ── PARTNER ── */
     .partner { background: var(--teal-dark); color: var(--white); }
@@ -513,6 +582,8 @@
       font-size: 1rem;
       text-decoration: none;
       transition: opacity 0.2s;
+      border: none;
+      cursor: pointer;
     }
     .btn-white:hover { opacity: 0.9; }
 
@@ -558,14 +629,6 @@
       max-width: 300px;
     }
     .footer-copy { font-size: 0.8rem; margin-top: 1rem; }
-
-    /* ── RESPONSIVE ── */
-
-    sup {
-      font-size: 0.55em;
-      vertical-align: super;
-      line-height: 0;
-    }
     .tm-disclaimer {
       margin-top: 1.25rem;
       font-size: 0.72rem;
@@ -576,8 +639,10 @@
       margin-right: auto;
     }
 
-    @media (max-width: 640px) {
+    /* ── RESPONSIVE ── */
+    @media (max-width: 760px) {
       .nav-links { display: none; }
+      .nav-toggle { display: flex; }
       .stat-strip { flex-wrap: wrap; }
       .stat-item { min-width: 50%; border-right: none; border-bottom: 1px solid var(--rule); }
       .ad-cards { grid-template-columns: 1fr; }
@@ -589,8 +654,18 @@
 
 <!-- NAV -->
 <nav>
-  <a class="nav-brand" href="#">Villages<sup>®</sup> Community Florida Map</a>
+  <a class="nav-brand" href="#">Villages<sup>&reg;</sup> Community Florida Map</a>
   <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#gallery">See the Map</a></li>
+    <li><a href="#advertise">Advertise</a></li>
+    <li><a href="#partner">Partner With Us</a></li>
+    <li><a href="#faq">FAQ</a></li>
+  </ul>
+  <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links-mobile" id="navLinksMobile">
     <li><a href="#about">About</a></li>
     <li><a href="#gallery">See the Map</a></li>
     <li><a href="#advertise">Advertise</a></li>
@@ -601,8 +676,8 @@
 
 <!-- HERO -->
 <section class="hero">
-  <p class="hero-eyebrow">The Villages<sup>®</sup>, Florida</p>
-  <h1>Villages<sup>®</sup> Community<br>Florida Map</h1>
+  <p class="hero-eyebrow">The Villages<sup>&reg;</sup>, Florida</p>
+  <h1>Villages<sup>&reg;</sup> Community<br>Florida Map</h1>
   <p class="hero-sub">A full-color foldable map that puts local businesses in front of thousands of residents — and turns every sale into fundraising for the causes you care about.</p>
   <div class="hero-ctas">
     <a href="#advertise" class="btn-primary">Advertise With Us</a>
@@ -630,23 +705,23 @@
 <section class="about" id="about">
   <div class="section-inner">
     <p class="section-label">About the Project</p>
-    <h2>A map The Villages<sup>®</sup> can be proud of</h2>
+    <h2>A map The Villages<sup>&reg;</sup> can be proud of</h2>
     <p class="about-body">
-      The Villages<sup>®</sup> Community Florida Map is a professionally printed, full-color foldable map of The Villages<sup>®</sup> — tucked into a 4″ × 6″ booklet that unfolds to a full 32″ × 18″ community reference. It's the kind of thing residents keep in their car, give to visiting family, or pick up at a local event.
+      The Villages<sup>&reg;</sup> Community Florida Map is a professionally printed, full-color foldable map of The Villages<sup>&reg;</sup> — tucked into a 4″ × 6″ booklet that unfolds to a full 32″ × 18″ community reference. It's the kind of thing residents keep in their golf cart, car, give to visiting family, or pick up at a local event.
     </p>
     <p class="about-body">
       The map features 33 business card-sized advertising spots. Ad revenue covers the cost of printing. The maps are then distributed by local non-profits and youth sports organizations, who sell them to raise funds for their own causes. Every copy sold puts money back into the community.
     </p>
-    <p class="section-label" style="margin-top:2.5rem; margin-bottom:0.75rem;">Generation 1 — See it in action</p>
+    <p class="section-label" style="margin-top:2.5rem; margin-bottom:0.75rem;">2024 Map — See it in action</p>
     <div class="video-wrap">
       <iframe
         src="https://www.youtube.com/embed/_eM9cZCaNj0"
-        title="Villages<sup>®</sup> Community Map — Generation 1"
+        title="Villages Community Map — 2024"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowfullscreen>
       </iframe>
     </div>
-    <p class="video-caption">The original Villages<sup>®</sup> Community Map, sold by Habitat for Humanity of Lake-Sumter.</p>
+    <p class="video-caption">The original Villages<sup>&reg;</sup> Community Map, sold by Habitat for Humanity of Lake-Sumter.</p>
   </div>
 </section>
 
@@ -654,69 +729,81 @@
 <section class="gallery-section" id="gallery">
   <div class="section-inner wide">
     <p class="section-label">See the Map</p>
-    <h2>Two generations of community mapping</h2>
+    <h2>Two years of community mapping</h2>
 
     <div class="gallery-tabs">
-      <button class="tab-btn active" onclick="switchTab(this, 'gen1')">Generation 1 — Printed Map</button>
-      <button class="tab-btn" onclick="switchTab(this, 'gen2')">Generation 2 — With Advertising</button>
+      <button class="tab-btn active" onclick="switchTab(this, 'y2024')">2024 Map</button>
+      <button class="tab-btn" onclick="switchTab(this, 'y2026')">2026 Map</button>
     </div>
 
-    <!-- GEN 1 TAB -->
-    <div class="tab-panel active" id="tab-gen1">
+    <!-- 2024 TAB -->
+    <div class="tab-panel active" id="tab-y2024">
       <div class="gallery-grid">
-        <!-- Drop your Gen 1 images here: replace src with your actual file paths -->
-        <div class="gallery-item">
+        <div class="gallery-item portrait">
           <div class="gallery-placeholder">
-            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9l4-4 4 4 4-4 4 4"/><circle cx="8.5" cy="14.5" r="1.5"/></svg>
-            Add: gen1-photo-1.jpg
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9l4-4 4 4 4-4 4 4"/><circle cx="8.5" cy="14.5" r="1.5"/></svg>
+            Add: front cover 2024.jpg
           </div>
-          <p class="gallery-item-caption">Map folded — front cover</p>
+          <p class="gallery-item-caption">Front cover (folded)</p>
         </div>
-        <div class="gallery-item">
+        <div class="gallery-item portrait">
           <div class="gallery-placeholder">
-            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9l4-4 4 4 4-4 4 4"/><circle cx="8.5" cy="14.5" r="1.5"/></svg>
-            Add: gen1-photo-2.jpg
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9l4-4 4 4 4-4 4 4"/><circle cx="8.5" cy="14.5" r="1.5"/></svg>
+            Add: back cover 2024.jpg
           </div>
-          <p class="gallery-item-caption">Map unfolded — full 32″ × 18″</p>
+          <p class="gallery-item-caption">Back cover (folded)</p>
         </div>
-        <div class="gallery-item">
+        <div class="gallery-item front-unfolded">
           <div class="gallery-placeholder">
-            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9l4-4 4 4 4-4 4 4"/><circle cx="8.5" cy="14.5" r="1.5"/></svg>
-            Add: gen1-photo-3.jpg
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9l4-4 4 4 4-4 4 4"/><circle cx="8.5" cy="14.5" r="1.5"/></svg>
+            Add: North 2024.jpg
           </div>
-          <p class="gallery-item-caption">Map detail — community landmarks</p>
+          <p class="gallery-item-caption">North — front unfolded, 31″ × 19″</p>
+        </div>
+        <div class="gallery-item back-unfolded">
+          <div class="gallery-placeholder">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9l4-4 4 4 4-4 4 4"/><circle cx="8.5" cy="14.5" r="1.5"/></svg>
+            Add: South 2024.jpg
+          </div>
+          <p class="gallery-item-caption">South — back unfolded, 19″ × 31″ (landscape)</p>
         </div>
       </div>
-      <p class="gallery-note">Generation 1 was sold by Habitat for Humanity of Lake-Sumter. Over 500 copies sold, raising more than $5,000 for their programs.</p>
+      <p class="gallery-note">The 2024 map was sold by Habitat for Humanity of Lake-Sumter. Over 500 copies sold, raising more than $5,000 for their programs.</p>
     </div>
 
-    <!-- GEN 2 TAB -->
-    <div class="tab-panel" id="tab-gen2">
+    <!-- 2026 TAB -->
+    <div class="tab-panel" id="tab-y2026">
       <div class="gallery-grid">
-        <!-- Drop your Gen 2 images here -->
-        <div class="gallery-item">
+        <div class="gallery-item portrait">
           <div class="gallery-placeholder">
-            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9l4-4 4 4 4-4 4 4"/><circle cx="8.5" cy="14.5" r="1.5"/></svg>
-            Add: gen2-overview.jpg
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9l4-4 4 4 4-4 4 4"/><circle cx="8.5" cy="14.5" r="1.5"/></svg>
+            Add: front cover 2026.jpg
           </div>
-          <p class="gallery-item-caption">Generation 2 — full map with ad zones</p>
+          <p class="gallery-item-caption">Front cover (folded)</p>
         </div>
-        <div class="gallery-item">
+        <div class="gallery-item portrait">
           <div class="gallery-placeholder">
-            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9l4-4 4 4 4-4 4 4"/><circle cx="8.5" cy="14.5" r="1.5"/></svg>
-            Add: gen2-back-cover.jpg
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9l4-4 4 4 4-4 4 4"/><circle cx="8.5" cy="14.5" r="1.5"/></svg>
+            Add: back cover 2026.jpg
           </div>
-          <p class="gallery-item-caption">Back cover — premium ad placement, always visible when folded</p>
+          <p class="gallery-item-caption">Back cover (folded) — premium ad placement</p>
         </div>
-        <div class="gallery-item">
+        <div class="gallery-item front-unfolded">
           <div class="gallery-placeholder">
-            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9l4-4 4 4 4-4 4 4"/><circle cx="8.5" cy="14.5" r="1.5"/></svg>
-            Add: gen2-interior-ads.jpg
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9l4-4 4 4 4-4 4 4"/><circle cx="8.5" cy="14.5" r="1.5"/></svg>
+            Add: North 2026.jpg
           </div>
-          <p class="gallery-item-caption">Interior pages — 31 business card-sized ad spots</p>
+          <p class="gallery-item-caption">North — front unfolded, 31″ × 19″, full map with ad zones</p>
+        </div>
+        <div class="gallery-item back-unfolded">
+          <div class="gallery-placeholder">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9l4-4 4 4 4-4 4 4"/><circle cx="8.5" cy="14.5" r="1.5"/></svg>
+            Add: South 2026.jpg
+          </div>
+          <p class="gallery-item-caption">South — back unfolded, 19″ × 31″ (landscape), interior ad spots</p>
         </div>
       </div>
-      <p class="gallery-note">Generation 2 adds 33 advertising spots — 31 interior and 2 premium back-cover positions. Ad revenue funds the print run; every map sold benefits a local nonprofit or youth sports organization.</p>
+      <p class="gallery-note">The 2026 map adds 33 advertising spots — 31 interior and 2 premium back-cover positions. Ad revenue funds the print run; every map sold benefits a local nonprofit or youth sports organization.</p>
     </div>
   </div>
 </section>
@@ -725,7 +812,7 @@
 <section class="advertise" id="advertise">
   <div class="section-inner">
     <p class="section-label">For Businesses</p>
-    <h2>Put your business in front of The Villages<sup>®</sup></h2>
+    <h2>Put your business in front of The Villages<sup>&reg;</sup></h2>
     <p class="lead">Every ad appears on 5,000–10,000 professionally printed maps distributed by local non-profits and youth sports organizations — the people your customers already trust.</p>
 
     <div class="ad-cards">
@@ -760,7 +847,7 @@
       </div>
       <div class="how-step">
         <div class="step-num">2</div>
-        <p class="step-text">Your ad appears on 5,000–10,000 printed maps distributed across The Villages<sup>®</sup>. The total print run grows with ad and donation revenue.</p>
+        <p class="step-text">Your ad appears on 5,000–10,000 printed maps distributed across The Villages<sup>&reg;</sup>. The total print run grows with ad and donation revenue.</p>
       </div>
       <div class="how-step">
         <div class="step-num">3</div>
@@ -768,7 +855,7 @@
       </div>
     </div>
 
-    <a href="mailto:[YOUR EMAIL]?subject=Villages Community Map — Ad Reservation" class="cta-green">Reserve Your Spot</a>
+    <a href="mailto:Maps32162@gmail.com?subject=Villages%20Community%20Map%20%E2%80%94%20Ad%20Reservation" class="cta-teal">Reserve Your Spot</a>
   </div>
 </section>
 
@@ -813,10 +900,10 @@
 
     <div class="social-proof">
       <div class="social-proof-logo">Habitat<br>for Humanity<br>Lake-Sumter</div>
-      <p class="social-proof-text"><strong>Already on board.</strong> Habitat for Humanity of Lake-Sumter is our founding partner. They sold over 500 copies of the Generation 1 map, raising more than <strong>$5,000</strong> for their programs. Generation 2 expands the model to benefit multiple organizations at once.</p>
+      <p class="social-proof-text"><strong>Already on board.</strong> Habitat for Humanity of Lake-Sumter is our founding partner. They sold over 500 copies of the 2024 map, raising more than <strong>$5,000</strong> for their programs. The 2026 map expands the model to benefit multiple organizations at once.</p>
     </div>
 
-    <a href="mailto:[YOUR EMAIL]?subject=Villages Community Map — Partnership Inquiry" class="btn-white">Let's Talk</a>
+    <a href="mailto:Maps32162@gmail.com?subject=Villages%20Community%20Map%20%E2%80%94%20Partnership%20Inquiry" class="btn-white">Let's Talk</a>
   </div>
 </section>
 
@@ -843,8 +930,8 @@
         <p class="faq-a">Advertisers submit standard business card artwork (3.5″ × 2″). We handle placement and printing. If you don't have existing artwork, your business card design works perfectly.</p>
       </div>
       <div class="faq-item">
-        <p class="faq-q">What's the difference between Generation 1 and Generation 2?</p>
-        <p class="faq-a">Generation 1 was produced and sold exclusively by Habitat for Humanity of Lake-Sumter. Generation 2 adds 33 business advertising spots and opens the distribution model to multiple non-profit and youth sports partners — so more organizations benefit, and a larger print run is possible.</p>
+        <p class="faq-q">What's the difference between the 2024 map and the 2026 map?</p>
+        <p class="faq-a">The 2024 map was produced and sold exclusively by Habitat for Humanity of Lake-Sumter. The 2026 map adds 33 business advertising spots and opens the distribution model to multiple non-profit and youth sports partners — so more organizations benefit, and a larger print run is possible.</p>
       </div>
       <div class="faq-item">
         <p class="faq-q">Who do I contact to get started?</p>
@@ -856,16 +943,14 @@
 
 <!-- FOOTER -->
 <footer>
-  <p class="footer-name">Villages<sup>®</sup> Community Florida Map</p>
-  <p>The Villages<sup>®</sup>, Florida</p>
+  <p class="footer-name">Villages<sup>&reg;</sup> Community Florida Map</p>
+  <p>The Villages<sup>&reg;</sup>, Florida</p>
   <hr class="footer-divider">
   <p>
-    <a href="mailto:[YOUR EMAIL]">[Your Name] · [Your Email]</a>
-    &nbsp;·&nbsp;
-    <a href="tel:[YOUR PHONE]">[Your Phone]</a>
+    <a href="mailto:Maps32162@gmail.com">Maps32162@gmail.com</a>
   </p>
-  <p class="footer-copy">© 2025 Villages<sup>®</sup> Community Florida Map Project. All rights reserved.</p>
-  <p class="tm-disclaimer">THE VILLAGES<sup>®</sup> is a registered trademark of Holding Company of The Villages, Inc. Scope and Scale is not affiliated with, or sponsored by, Holding Company of The Villages, Inc. or its affiliated entities.</p>
+  <p class="footer-copy">© 2025 Villages<sup>&reg;</sup> Community Florida Map Project. All rights reserved.</p>
+  <p class="tm-disclaimer">THE VILLAGES<sup>&reg;</sup> is a registered trademark of Holding Company of The Villages, Inc. Maps32162 is not affiliated with, or sponsored by, Holding Company of The Villages, Inc. or its affiliated entities.</p>
 </footer>
 
 <script>
@@ -875,6 +960,19 @@
     btn.classList.add('active');
     document.getElementById('tab-' + tabId).classList.add('active');
   }
+
+  const navToggle = document.getElementById('navToggle');
+  const navLinksMobile = document.getElementById('navLinksMobile');
+  navToggle.addEventListener('click', () => {
+    const isOpen = navLinksMobile.classList.toggle('open');
+    navToggle.setAttribute('aria-expanded', isOpen);
+  });
+  navLinksMobile.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      navLinksMobile.classList.remove('open');
+      navToggle.setAttribute('aria-expanded', 'false');
+    });
+  });
 </script>
 
 </body>
